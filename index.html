@@ -1384,7 +1384,7 @@ async function saveToGoogleSheets(patientObj, action) {
   }
 
   const row = [
-    '', // No - auto generate
+    '', // No - auto generate di script
     patientObj.tglMasuk || new Date().toLocaleDateString('id-ID'),
     patientObj.bedId || patientObj.tempat || '',
     patientObj.mrn || '',
@@ -1407,7 +1407,7 @@ async function saveToGoogleSheets(patientObj, action) {
     patientObj.tindakan || '',
     patientObj.perawat || '',
     patientObj.dokterJaga || ''
-  ];
+];
 
   try {
     const payload = { 
@@ -1863,6 +1863,7 @@ async function testConnection() {
 </body>
 
 </html>
+
 
 
 
