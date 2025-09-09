@@ -1755,59 +1755,64 @@ cells[22].innerHTML = `
         }
 
         // Load patient data dari Google Sheets
-async function loadPatientData() {
-  try {
-    const resp = await fetch(GOOGLE_SCRIPT_URL);
-    const json = await resp.json();
+function loadPatientData() {
+  const script = document.createElement('script');
+  script.src = GOOGLE_SCRIPT_URL + '?callback=handlePatientData';
+  document.head.appendChild(script);
+}
 
-    if (json.result === "success" && json.data) {
-      patientData = json.data.map((row) => ({
-        rowIndex: row.rowIndex,
-        tglMasuk: row['Tgl Masuk'] || "",
-        tempat: row['Bed'] || "",
-        mrn: row['MRN'] || "",
-        nama: row['Nama Pasien'] || "",
-        pasien: row['Jenis Pasien (B/L)'] === 'B' ? 'Baru' : 'Lama',
-        jk: row['JK'] || "",
-        usia: row['Usia'] || "",
-        jamDatang: row['Jam Datang'] || "",
-        jamSelesai: row['Jam Selesai'] || "",
-        los: row['LOS'] || "",
-        triase: row['Triase'] || "",
-        diagnosa: row['Diagnosa'] || "",
-        caraDatang: row['Cara Datang'] || "",
-        asalRujukan: row['Asal Rujukan'] || "",
-        jaminan: row['Jaminan'] || "",
-        statusRawat: row['Status Rawat'] || "",
-        ruangRawat: row['Ruang Rawat'] || "",
-        kelas: row['Kelas'] || "",
-        dpjp: row['DPJP'] || "",
-        tindakan: row['Tindakan'] || "",
-        perawat: row['Perawat/Bidan'] || "",
-        dokterJaga: row['Dokter Jaga'] || ""
-      }));
+function handlePatientData(response) {
+  if (response.result === "success") {
+    patientData = response.data.map((row) => ({
+      rowIndex: row.rowIndex,
+      tglMasuk: row['Tgl Masuk'] || "",
+      tempat: row['Bed'] || "",
+      mrn: row['MRN'] || "",
+      nama: row['Nama Pasien'] || "",
+      pasien: row['Jenis Pasien (B/L)'] === 'B' ? 'Baru' : 'Lama',
+      jk: row['JK'] || "",
+      usia: row['Usia'] || "",
+      jamDatang: row['Jam Datang'] || "",
+      jamSelesai: row['Jam Selesai'] || "",
+      los: row['LOS'] || "",
+      triase: row['Triase'] || "",
+      diagnosa: row['Diagnosa'] || "",
+      caraDatang: row['Cara Datang'] || "",
+      asalRujukan: row['Asal Rujukan'] || "",
+      jaminan: row['Jaminan'] || "",
+      statusRawat: row['Status Rawat'] || "",
+      ruangRawat: row['Ruang Rawat'] || "",
+      kelas: row['Kelas'] || "",
+      dpjp: row['DPJP'] || "",
+      tindakan: row['Tindakan'] || "",
+      perawat: row['Perawat/Bidan'] || "",
+      dokterJaga: r['Dokter Jaga'] || ""
+    }));
 
-      loadRekapTable(patientData);
-      console.log("Data berhasil dimuat:", patientData.length);
-    }
-  } catch (err) {
-    console.error("Gagal load data:", err);
-    alert("Tidak bisa mengambil data dari Google Sheets.");
+    loadRekapTable(patientData);
+    console.log("Data berhasil dimuat via JSONP:", patientData.length);
+  } else {
+    console.error("Error loading data:", response.message);
+    alert("Error loading data: " + response.message);
   }
 }
 
 
         // Tambahkan fungsi ini untuk testing
-async function testConnection() {
-    try {
-        const response = await fetch(GOOGLE_SCRIPT_URL);
-        const data = await response.json();
-        console.log('Test connection result:', data);
-    } catch (error) {
-        console.error('Connection failed:', error);
-    }
+function testConnection() {
+  const script = document.createElement('script');
+  script.src = GOOGLE_SCRIPT_URL + '?callback=handleTestConnection';
+  document.head.appendChild(script);
 }
 
+function handleTestConnection(response) {
+  console.log('Test result:', response);
+  if (response.result === 'success') {
+    alert('Koneksi berhasil! Ditemukan ' + response.data.length + ' data.');
+  } else {
+    alert('Koneksi gagal: ' + response.message);
+  }
+}
 // Panggil di console browser
 testConnection();
 
@@ -1858,6 +1863,7 @@ async function testConnection() {
 </body>
 
 </html>
+
 
 
 
