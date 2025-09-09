@@ -779,7 +779,7 @@
 
         // Konfigurasi Google Sheets
         const GOOGLE_SHEET_ID = '1vku1XBok2010xMUIWG8iUMZSY3_EE0fsx2FIknCidAQ';
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwP3m52ElDY6pSscy6dDl29uaLchVA34fMHSiq5RoT9mncNODSehXM-guW6IXrzXVT4/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxshvOe5Teptt-0jWLgNe0DAEG-4sdgfWBnIVXqTaDqLmfABfPw9DHOTV-MV6ggrGq2/exec';
 
         // Daftar tempat tidur IGD
         const bedList = [
@@ -1384,7 +1384,7 @@ async function saveToGoogleSheets(patientObj, action) {
   }
 
   const row = [
-    '', // No - auto generate di script
+    '', // No - auto generate
     patientObj.tglMasuk || new Date().toLocaleDateString('id-ID'),
     patientObj.bedId || patientObj.tempat || '',
     patientObj.mrn || '',
@@ -1407,7 +1407,7 @@ async function saveToGoogleSheets(patientObj, action) {
     patientObj.tindakan || '',
     patientObj.perawat || '',
     patientObj.dokterJaga || ''
-];
+  ];
 
   try {
     const payload = { 
@@ -1757,8 +1757,9 @@ cells[22].innerHTML = `
         // Load patient data dari Google Sheets
 function loadPatientData() {
   const script = document.createElement('script');
+  // callback=handlePatientData → harus sama dengan nama fungsi yang sudah ada untuk mengolah data
   script.src = GOOGLE_SCRIPT_URL + '?callback=handlePatientData';
-  document.head.appendChild(script);
+  document.body.appendChild(script);
 }
 
 function handlePatientData(response) {
@@ -1863,9 +1864,6 @@ async function testConnection() {
 </body>
 
 </html>
-
-
-
 
 
 
